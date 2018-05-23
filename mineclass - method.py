@@ -75,7 +75,8 @@ def act(act):
         elif board[cursor[0]][cursor[1]].contents=='x': #지뢰일때
             for i in range(n):
                 for j in range(n):
-                    board[i][j].visible:True
+                    board[i][j].visible=True
+            global lose
             lose=True
         else:
             board[cursor[0]][cursor[1]].visible=True #숫자일때
@@ -87,7 +88,7 @@ def act(act):
             board[cursor[0]][cursor[1]].flag=True
 
     if act=='new':
-        stat_newgame()
+        start_newgame()
     
         
 def expent(x,y):
@@ -226,11 +227,16 @@ def set_hint():
                 board[i][j].contents=' '
 
 def start_newgame():
+
+    for i in range(n):
+        for j in range(n):
+            board[i][j].contents=0
     set_mine(mine_num)
     set_hint()
     for i in range(n):
         for j in range(n):
-            board[i][j].visible:False
+            board[i][j].visible=False
+    global cursor
     cursor=[n//2,n//2]
     print('NEW GAME')
 
@@ -247,24 +253,31 @@ n=9
 
 mine_num=10
 
-board=[ [cell(0,True,False) for col in range(n)] for row in range(n) ]
-cursor=[n//2,n//2]
+board=[ [cell(0,False,False) for col in range(n)] for row in range(n) ]
 program=1
-win=False
-lose=False
-
 
 while program==1:
-    
+
+        global win
+        global lose
+        win=False
+        lose=False
+
         start_newgame()
         
         while win==False and lose==False:
             print_board()
             act(input())
             judge_win()
-            
+
         if win==True:
             print('YOU WIN!')
-        else:
+        if lose==True:
             print('YOU LOSE!')
+            for i in range(n):
+                for j in range(n):
+                    board[i][j].visible=True
+            print_board()
+            
+        restart=input('input any key to restart')
                 
