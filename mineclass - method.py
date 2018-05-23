@@ -7,16 +7,12 @@ class cell:
         self.visible=visible
         self.flag=flag
 
-        
-n=9
-
-mine_num=10
-
-board=[ [cell(0,False,False) for col in range(n)] for row in range(n) ]
-
 def set_mine(mine_num):
     for i in range(mine_num):
-        board[random.randint(0,n-1)][random.randint(0,n-1)].contents='x'
+        if board[random.randint(0,n-1)][random.randint(0,n-1)].contents=='x':
+            set_mine(0)
+        else:
+            board[random.randint(0,n-1)][random.randint(0,n-1)].contents='x'
 
 def print_board():
     for i in range(n):
@@ -57,10 +53,8 @@ def print_board():
 #0,0,1 ⚑
 #0,0,0 ■
 
-cursor=[n//2,n//2]
+def act(act):
 
-def move_cursor():
-    act=input()
     if act=='4':
         if cursor[1]!=0:
             cursor[1]-=1
@@ -73,19 +67,27 @@ def move_cursor():
     if act=='6':
         if cursor[1]!=n-1:
             cursor[1]+=1
+
     if act=='5':
-        board[cursor[0]][cursor[1]].visible=True
-        if board[cursor[0]][cursor[1]].contents==' ':
+        if board[cursor[0]][cursor[1]].contents==' ': #빈칸일때
+            board[cursor[0]][cursor[1]].visible=True
             expent(cursor[0],cursor[1])
-        if board[cursor[0]][cursor[1]].contents=='x':
-            gameover=1
+        elif board[cursor[0]][cursor[1]].contents=='x': #지뢰일때
+            for i in range(n):
+                for j in range(n):
+                    board[i][j].visible:True
+            lose=True
+        else:
+            board[cursor[0]][cursor[1]].visible=True #숫자일때
+            
     if act=='7':
         if board[cursor[0]][cursor[1]].flag==True:
             board[cursor[0]][cursor[1]].flag=False
         else:
             board[cursor[0]][cursor[1]].flag=True
+
     if act=='new':
-        gameover=1
+        stat_newgame()
     
         
 def expent(x,y):
@@ -223,20 +225,46 @@ def set_hint():
             if board[i][j].contents==0:
                 board[i][j].contents=' '
 
+def start_newgame():
+    set_mine(mine_num)
+    set_hint()
+    for i in range(n):
+        for j in range(n):
+            board[i][j].visible:False
+    cursor=[n//2,n//2]
+    print('NEW GAME')
 
+def judge_win():
+    win_count=0
+    for i in range(n):
+        for j in range(n):
+            if board[i][j].contents=='x' and board[i][j].flag==True:
+                win_count+=1
+    if win_count==mine_num:
+        win=True
+        
+n=9
 
+mine_num=10
 
+board=[ [cell(0,True,False) for col in range(n)] for row in range(n) ]
+cursor=[n//2,n//2]
 program=1
-gameover=0
+win=False
+lose=False
 
-while program==1: 
-        set_mine(mine_num)
-        set_hint()
-        print('NEW GAME')
-        while gameover==0:
-            print_board()
-            move_cursor()
-            if gameover==1:
-                continue
-        print('GAME OVER')
+
+while program==1:
     
+        start_newgame()
+        
+        while win==False and lose==False:
+            print_board()
+            act(input())
+            judge_win()
+            
+        if win==True:
+            print('YOU WIN!')
+        else:
+            print('YOU LOSE!')
+                
