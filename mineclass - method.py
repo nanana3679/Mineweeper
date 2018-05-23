@@ -2,10 +2,11 @@ import random
 
 
 class cell:
-    def __init__(self,contents,visible,flag):
+    def __init__(self,contents,visible,flag,visit):
         self.contents=contents
         self.visible=visible
         self.flag=flag
+        self.visit=visit
 
 def set_mine(mine_num):
     for i in range(mine_num):
@@ -97,59 +98,59 @@ def expent(x,y):
                 board[x][y+1].visible=True
                 board[x+1][y].visible=True
                 board[x+1][y+1].visible=True
-                #if board[x][y+1].contents==0:
-                #    expent(x,y+1)
-                #if board[x+1][y].contents==0:
-                #    expent(x+1,y)
+                if board[x][y+1].contents==' ' and board[x][y+1].visit==False:
+                    expent(x,y+1)
+                if board[x+1][y].contents==' ' and board[x+1][y].visit==False:
+                    expent(x+1,y)
             elif y==n-1:#9
                 board[x][y-1].visible=True
                 board[x+1][y-1].visible=True
                 board[x+1][y].visible=True
-                #if board[x][y-1].contents==0:
-                #    expent(x,y-1)
-                #if board[x+1][y].contents==0:
-                #    expent(x+1,y)
+                if board[x][y-1].contents==' ' and board[x][y-1].visit==False:
+                    expent(x,y-1)
+                if board[x+1][y].contents==' ' and board[x+1][y].visit==False:
+                    expent(x+1,y)
             else:#8
                 board[x][y-1].visible=True
                 board[x][y+1].visible=True
                 board[x+1][y-1].visible=True
                 board[x+1][y].visible=True
                 board[x+1][y+1].visible=True
-                #if board[x][y-1].contents==0:
-                #    expent(x,y-1)
-                #if board[x][y+1].contents==0:
-                #    expent(x,y+1)
-                #if board[x+1][y].contents==0:
-                #    expent(x+1,y)
+                if board[x][y-1].contents==' ' and board[x][y-1].visit==False:
+                    expent(x,y-1)
+                if board[x][y+1].contents==' ' and board[x][y+1].visit==False:
+                    expent(x,y+1)
+                if board[x+1][y].contents==' ' and board[x+1][y].visit==False:
+                    expent(x+1,y)
         elif x==n-1:
             if y==0:#1
                 board[x-1][y].visible=True
                 board[x-1][y+1].visible=True
                 board[x][y+1].visible=True
-                #if board[x-1][y].contents==0:
-                #    expent(x-1,y)
-                #if board[x][y+1].contents==0:
-                #    expent(x,y+1)
+                if board[x-1][y].contents==' ' and board[x-1][y].visit==False:
+                    expent(x-1,y)
+                if board[x][y+1].contents==' ' and board[x][y+1].visit==False:
+                    expent(x,y+1)
             elif y==n-1:#3
                 board[x-1][y-1].visible=True
                 board[x-1][y].visible=True
                 board[x][y-1].visible=True
-                #if board[x-1][y].contents==0:
-                #    expent(x-1,y)
-                #if board[x][y-1].contents==0:
-                #    expent(x,y-1)
+                if board[x-1][y].contents==' ' and board[x-1][y].visit==False:
+                    expent(x-1,y)
+                if board[x][y-1].contents==' ' and board[x][y-1].visit==False:
+                    expent(x,y-1)
             else:#2
                 board[x-1][y-1].visible=True
                 board[x-1][y].visible=True
                 board[x-1][y+1].visible=True
                 board[x][y-1].visible=True
                 board[x][y+1].visible=True
-                #if board[x-1][y].contents==0:
-                #    expent(x-1,y)
-                #if board[x][y-1].contents==0:
-                #    expent(x,y-1)
-                #if board[x][y+1].contents==0:
-                #    expent(x,y+1)
+                if board[x-1][y].contents==' ' and board[x-1][y].visit==False:
+                    expent(x-1,y)
+                if board[x][y-1].contents==' ' and board[x][y-1].visit==False:
+                    expent(x,y-1)
+                if board[x][y+1].contents==' ' and board[x][y+1].visit==False:
+                    expent(x,y+1)
         else:
             if y==0:#4
                 board[x-1][y].visible=True
@@ -157,24 +158,24 @@ def expent(x,y):
                 board[x][y+1].visible=True
                 board[x+1][y].visible=True
                 board[x+1][y+1].visible=True
-                #if board[x-1][y].contents==0:
-                #    expent(x-1,y)
-                #if board[x][y+1].contents==0:
-                #    expent(x,y+1)
-                #if board[x+1][y].contents==0:
-                #    expent(x+1,y)
+                if board[x-1][y].contents==' ' and board[x-1][y].visit==False:
+                    expent(x-1,y)
+                if board[x][y+1].contents==' ' and board[x][y+1].visit==False:
+                    expent(x,y+1)
+                if board[x+1][y].contents==' ' and board[x+1][y].visit==False:
+                    expent(x+1,y)
             elif y==n-1:#6
                 board[x-1][y-1].visible=True
                 board[x-1][y].visible=True
                 board[x][y-1].visible=True
                 board[x+1][y-1].visible=True
                 board[x+1][y].visible=True
-                #if board[x-1][y].contents==0:
-                #    expent(x-1,y)
-                #if board[x][y-1].contents==0:
-                #    expent(x,y-1)
-                #if board[x+1][y].contents==0:
-                #    expent(x+1,y)
+                if board[x-1][y].contents==' ' and board[x-1][y].visit==False:
+                    expent(x-1,y)
+                if board[x][y-1].contents==' ' and board[x][y-1].visit==False:
+                    expent(x,y-1)
+                if board[x+1][y].contents==' ' and board[x+1][y].visit==False:
+                    expent(x+1,y)
             else:#5
                 board[x-1][y-1].visible=True
                 board[x-1][y].visible=True
@@ -184,14 +185,14 @@ def expent(x,y):
                 board[x+1][y-1].visible=True
                 board[x+1][y].visible=True
                 board[x+1][y+1].visible=True
-                #if board[x-1][y].contents==0:
-                #    expent(x-1,y)
-                #if board[x][y-1].contents==0:
-                #    expent(x,y-1)
-                #if board[x][y+1].contents==0:
-                #    expent(x,y+1)
-                #if board[x+1][y].contents==0:
-                #    expent(x+1,y)
+                if board[x-1][y].contents==' ' and board[x-1][y].visit==False:
+                    expent(x-1,y)
+                if board[x][y-1].contents==' ' and board[x][y-1].visit==False:
+                    expent(x,y-1)
+                if board[x][y+1].contents==' ' and board[x][y+1].visit==False:
+                    expent(x,y+1)
+                if board[x+1][y].contents==' ' and board[x+1][y].visit==False:
+                    expent(x+1,y)
                 
 def set_hint():    
     for i in range(n):
@@ -257,7 +258,7 @@ n=9
 
 mine_num=10
 
-board=[ [cell(0,False,False) for col in range(n)] for row in range(n) ]
+board=[ [cell(0,False,False,False) for col in range(n)] for row in range(n) ]
 program=1
 
 while program==1:
