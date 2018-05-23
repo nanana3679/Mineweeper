@@ -231,6 +231,9 @@ def start_newgame():
     for i in range(n):
         for j in range(n):
             board[i][j].contents=0
+    for i in range(n):
+        for j in range(n):
+            board[i][j].flag=False
     set_mine(mine_num)
     set_hint()
     for i in range(n):
@@ -247,6 +250,7 @@ def judge_win():
             if board[i][j].contents=='x' and board[i][j].flag==True:
                 win_count+=1
     if win_count==mine_num:
+        global win
         win=True
         
 n=9
@@ -272,6 +276,11 @@ while program==1:
 
         if win==True:
             print('YOU WIN!')
+            for i in range(n):
+                for j in range(n):
+                    board[i][j].visible=True
+            print_board()
+            
         if lose==True:
             print('YOU LOSE!')
             for i in range(n):
