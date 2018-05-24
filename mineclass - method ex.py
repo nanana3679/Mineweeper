@@ -73,7 +73,9 @@ def act(act):
             cursor[1]+=1
 
     if act=='5':
-        if board[cursor[0]][cursor[1]].contents==' ': #빈칸일때
+        if board[cursor[0]][cursor[1]].flag==True:
+            pass
+        elif board[cursor[0]][cursor[1]].contents==' ': #빈칸일때
             board[cursor[0]][cursor[1]].visible=True
             expent(cursor[0],cursor[1])
         elif board[cursor[0]][cursor[1]].contents=='x': #지뢰일때
@@ -288,20 +290,21 @@ def start_newgame():
     print('NEW GAME')
 
 def judge_win():
-    win_count=0
-    win_count2=0
+    win_1=0
+    win_2=0
     global win
     global flag
-    for i in range(n): #지뢰에 깃발을 꽂았을 때 win_count증가
+    for i in range(n): #모든 지뢰에 깃발을 꽂았을 경우
         for j in range(n):
             if board[i][j].contents=='x' and board[i][j].flag==True:
-                win_count+=1
-    for i in range(n):
+                win_1+=1
+
+    for i in range(n): #visible=False인 칸이 모두 지뢰가 아닐경우
         for j in range(n):
             if board[i][j].contents==' ' and board[i][j].visible==True:
-                win_count2+=1
+                win_2+=1
     
-    if win_count==mine_num and flag==0: #모든 지뢰에 깃발을 꽂았고 깃발의 숫자가 0일때
+    if win_1==mine_num and flag==0: #모든 지뢰에 깃발을 꽂았고 깃발의 숫자가 0일때
         
         win=True
     
@@ -342,3 +345,4 @@ while program==1:
             
         restart=input('input any key to restart')
                 
+#개선사항 : 게임오버시 잘못꽂혀진 깃발표시, win1판정에서 지뢰아닌칸이 열리지않았을경우,win2판정
