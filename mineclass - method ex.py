@@ -1,6 +1,5 @@
 import random
 
-
 class cell:
     def __init__(self,contents,visible,flag,visit):
         self.contents=contents
@@ -19,6 +18,7 @@ def set_mine(mine_num):
 
 
 def print_board():
+    print('FLAG :',flag)
     for i in range(n):
         for j in range(n):
             if board[i][j].visible==True:
@@ -86,17 +86,21 @@ def act(act):
             board[cursor[0]][cursor[1]].visible=True #숫자일때
             
     if act=='7':
+        global flag
         if board[cursor[0]][cursor[1]].flag==True:
             board[cursor[0]][cursor[1]].flag=False
+            flag+=1
         else:
-            board[cursor[0]][cursor[1]].flag=True
+            if board[cursor[0]][cursor[1]].visible==False:
+                board[cursor[0]][cursor[1]].flag=True
+                flag-=1
 
     if act=='new':
         start_newgame()
     
         
 def expent(x,y):
-    #if board[x][y-1].contents==' ' and board[x][y+1].contents==' ' and board[x-1][y].contents==' ' and board[x+1][y].contents==' ':
+    
         board[x][y].visit=True   #상하좌우에 빈칸없으면 
         if x==0: #주위8칸 뚫기
             if y==0:#7
@@ -230,7 +234,6 @@ def expent(x,y):
                     expent(x-1,y+1)
                 if board[x+1][y+1].contents==' ' and board[x+1][y+1].visit==False:
                     expent(x+1,y+1)
-    #elif
                 
 def set_hint():    
     for i in range(n):
@@ -280,18 +283,28 @@ def start_newgame():
             board[i][j].visible=False
     global cursor
     cursor=[n//2,n//2]
+    global flag
+    flag=mine_num
     print('NEW GAME')
 
 def judge_win():
     win_count=0
-    for i in range(n):
+    win_count2=0
+    global win
+    global flag
+    for i in range(n): #지뢰에 깃발을 꽂았을 때 win_count증가
         for j in range(n):
             if board[i][j].contents=='x' and board[i][j].flag==True:
                 win_count+=1
-    if win_count==mine_num:
-        global win
-        win=True
+    for i in range(n):
+        for j in range(n):
+            if board[i][j].contents==' ' and board[i][j].visible==True:
+                win_count2+=1
+    
+    if win_count==mine_num and flag==0: #모든 지뢰에 깃발을 꽂았고 깃발의 숫자가 0일때
         
+        win=True
+    
 n=9
 
 mine_num=10
