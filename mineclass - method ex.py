@@ -10,10 +10,13 @@ class cell:
 
 def set_mine(mine_num):
     for i in range(mine_num):
-        if board[random.randint(0,n-1)][random.randint(0,n-1)].contents=='x':
-            set_mine(0)
-        else:
-            board[random.randint(0,n-1)][random.randint(0,n-1)].contents='x'
+        ran_x=random.randint(0,n-1)
+        ran_y=random.randint(0,n-1)
+        while board[ran_x][ran_y].contents=='x':
+            ran_x=random.randint(0,n-1)
+            ran_y=random.randint(0,n-1)
+        board[ran_x][ran_y].contents='x'
+
 
 def print_board():
     for i in range(n):
