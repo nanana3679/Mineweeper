@@ -86,7 +86,7 @@ def print_board():
 
         
 def act(act):
-
+    global turn
     if act=='4':
         if cursor[1]!=0:
             cursor[1]-=1
@@ -101,19 +101,31 @@ def act(act):
             cursor[1]+=1
 
     if act=='5':
-        if board[cursor[0]][cursor[1]].flag==True:
+        if board[cursor[0]][cursor[1]].flag==True: #깃발일때
             pass
         elif board[cursor[0]][cursor[1]].contents==' ': #빈칸일때
             board[cursor[0]][cursor[1]].visible=True
             expent(cursor[0],cursor[1])
+            turn+=1
         elif board[cursor[0]][cursor[1]].contents=='x': #지뢰일때
-            for i in range(n):
-                for j in range(n):
-                    board[i][j].visible=True
-            global lose
-            lose=True
+            if turn>0: 
+                for i in range(n):
+                    for j in range(n):
+                        board[i][j].visible=True
+                global lose
+                lose=True
+            else:
+                while board[cursor[0]][cursor[1]].contents=='x':
+                    for i in range(n):
+                        for j in range(n):
+                            board[i][j].contents=0
+                    set_mine(mine_num)
+                    set_hint()
+                board[cursor[0]][cursor[1]].visible=True
+                turn+=1
         else:
             board[cursor[0]][cursor[1]].visible=True #숫자일때
+            turn+=1
             
     if act=='7':
         global flag
@@ -307,21 +319,18 @@ def start_newgame():
     for i in range(n):
         for j in range(n):
             board[i][j].contents=0
-    for i in range(n):
-        for j in range(n):
+            board[i][j].visible=False
             board[i][j].flag=False
+            board[i][j].visit=False
     set_mine(mine_num)
     set_hint()
-    for i in range(n):
-        for j in range(n):
-            board[i][j].visible=False
-    for i in range(n):
-        for j in range(n):
-            board[i][j].visit=False
+
     global cursor
     cursor=[n//2,n//2]
     global flag
     flag=mine_num
+    global turn
+    turn=0
     print('NEW GAME')
 
 def judge_win():
@@ -378,5 +387,3 @@ while program==1:
         restart=input('input any key to restart')
         
 sys.exit()
-
-#개선사항 : 시작시에 게임오버안당하기
