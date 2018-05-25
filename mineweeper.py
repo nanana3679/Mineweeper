@@ -119,13 +119,17 @@ def act(act):
                 global lose
                 lose=True
             else:
-                while board[cursor[0]][cursor[1]].contents=='x':
+                while board[cursor[0]][cursor[1]].contents=='x': #처음누른칸이 지뢰면 지뢰가 아닐때까지 재배치
                     for i in range(n):
                         for j in range(n):
                             board[i][j].contents=0
                     set_mine(mine_num)
                     set_hint()
-                board[cursor[0]][cursor[1]].visible=True
+                if board[cursor[0]][cursor[1]].contents==' ': #빈칸일때
+                    board[cursor[0]][cursor[1]].visible=True
+                    expent(cursor[0],cursor[1])
+                else:
+                    board[cursor[0]][cursor[1]].visible=True
                 turn+=1
         else:
             board[cursor[0]][cursor[1]].visible=True #숫자일때
