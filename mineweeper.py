@@ -32,8 +32,12 @@ def set_mine(mine_num):
 
 
 def print_board():
-    print('FLAG :',flag)
     global lose
+    global win
+    if win==True or lose==True:
+        pass
+    else:
+        print('FLAG :',flag)
     if lose==True:
         for i in range(n):
             for j in range(n):
