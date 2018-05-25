@@ -1,4 +1,5 @@
 import random
+import sys
 
 class cell:
     def __init__(self,contents,visible,flag,visit):
@@ -6,6 +7,19 @@ class cell:
         self.visible=visible
         self.flag=flag
         self.visit=visit
+
+def condition(self):
+            if self.visible==True:
+                if self.flag==True:
+                    return 3 #F
+                else:
+                    return 2 #contents
+            else:
+                if self.flag==True:
+                    return 1 #F
+                else:
+                    return 0 #■
+            
 
 def set_mine(mine_num):
     for i in range(mine_num):
@@ -19,44 +33,58 @@ def set_mine(mine_num):
 
 def print_board():
     print('FLAG :',flag)
-    for i in range(n):
-        for j in range(n):
-            if board[i][j].visible==True:
-                if cursor==[i,j]:
-                    if board[i][j].flag==True:
-                        print('>F',end='')
-                    else:
+    global lose
+    if lose==True:
+        for i in range(n):
+            for j in range(n):
+                if condition(board[i][j])==0 or condition(board[i][j])==2:
+                    if cursor==[i,j]:
                         print('>{}'.format(board[i][j].contents),end='')
-                else:
-                    if board[i][j].flag==True:
-                        print(' F',end='')
                     else:
                         print(' {}'.format(board[i][j].contents),end='')
-
-            else:
-                if cursor==[i,j]:
-                    if board[i][j].flag==True:
+                else:
+                    if board[i][j].contents=='x':
+                        if cursor==[i,j]:
+                            print('>F',end='')
+                        else:
+                            print(' F',end='')                        
+                    else:
+                        if cursor==[i,j]:
+                            print('>!',end='')
+                        else:
+                            print(' !',end='')
+            print()
+        
+    else:
+        for i in range(n):
+            for j in range(n):
+                if condition(board[i][j])==0:
+                    if cursor==[i,j]:
+                        print('>█',end='')
+                    else:
+                        print('■',end='')
+    
+                elif condition(board[i][j])==1:
+                    if cursor==[i,j]:
                         print('>F',end='')
                     else:
-                        print('>█'.format(board[i][j].contents),end='')
-                else:
-                    if board[i][j].flag==True:
                         print(' F',end='')
+
+                elif condition(board[i][j])==2:
+                    if cursor==[i,j]:
+                        print('>{}'.format(board[i][j].contents),end='')
                     else:
-                        print('■'.format(board[i][j].contents),end='')
-        print()
+                        print(' {}'.format(board[i][j].contents),end='')
+                else:
+                    if cursor==[i,j]:
+                        print('>F',end='')
+                    else:
+                        print(' F',end='')
+            print()
 
 
-#시야,커서,깃발
-#1,1,1 >f
-#1,1,0 >{}               
-#1,0,1 ⚑
-#1,0,0 {:2}
-#0,1,1 >f
-#0,1,0 >█       
-#0,0,1 ⚑
-#0,0,0 ■
 
+        
 def act(act):
 
     if act=='4':
@@ -99,6 +127,10 @@ def act(act):
 
     if act=='new':
         start_newgame()
+
+    if act=='exit':
+        global program
+        program=0
     
         
 def expent(x,y):
@@ -283,6 +315,9 @@ def start_newgame():
     for i in range(n):
         for j in range(n):
             board[i][j].visible=False
+    for i in range(n):
+        for j in range(n):
+            board[i][j].visit=False
     global cursor
     cursor=[n//2,n//2]
     global flag
@@ -306,6 +341,7 @@ n=9
 mine_num=10
 
 board=[ [cell(0,False,False,False) for col in range(n)] for row in range(n) ]
+
 program=1
 
 while program==1:
@@ -327,8 +363,7 @@ while program==1:
             for i in range(n):
                 for j in range(n):
                     board[i][j].visible=True
-                    if board[i][j].contents!='x' and board[i][j].flag==True:
-                        board[i][j].contents='!'
+
             print_board()
 
         else:
@@ -341,5 +376,7 @@ while program==1:
             
 
         restart=input('input any key to restart')
-                
-#개선사항 : 게임오버시 잘못꽂혀진 깃발표시,시작시에 게임오버안당하
+        
+sys.exit()
+
+#개선사항 : 시작시에 게임오버안당하기
