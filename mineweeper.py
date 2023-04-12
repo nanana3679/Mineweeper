@@ -64,9 +64,9 @@ def print_board():
             for j in range(n):
                 if condition(board[i][j])==0:
                     if cursor==[i,j]:
-                        print('>█',end='')
+                        print('>_',end='')
                     else:
-                        print('■',end='')
+                        print(' _',end='')
     
                 elif condition(board[i][j])==1:
                     if cursor==[i,j]:
